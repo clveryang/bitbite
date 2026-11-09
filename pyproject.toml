@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=64"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bitbite"
+version = "0.0.1"
+description = "从零手写 INT4 量化矩阵乘法，用 nano-vLLM 推理 Qwen3-4B-AWQ"
+requires-python = ">=3.10"
+dependencies = ["torch"]
+
+[project.optional-dependencies]
+dev = ["pytest"]
+
+[tool.setuptools]
+packages = ["bitbite"]
