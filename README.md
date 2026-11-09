@@ -21,7 +21,11 @@
 
 ## Qwen3-4B-AWQ 要点
 
-`bits=4, group_size=128, zero_point=true, version=gemm`，`torch_dtype=float16`，`tie_word_embeddings=true`（lm_head 不量化）。
+`bits=4, group_size=128, zero_point=true, version=gemm`，`tie_word_embeddings=true`（没有单独的 lm_head，复用 embedding）。
+
+量化范围（已读 safetensors 头部确认）：每层 7 个 Linear（q/k/v/o + gate/up/down）都是 INT4，约 3.63B 参数，FFN 占约 74%。
+
+**dtype 注意：** config 写的是 `torch_dtype=float16`，scales 也是 FP16，但 `embed_tokens` 和所有 norm（input/post_attention_layernorm、q_norm、k_norm、norm）实际是 **BF16**，loader 要逐张量转成统一 dtype。
 
 | 张量 | 形状 | 说明 |
 |---|---|---|
